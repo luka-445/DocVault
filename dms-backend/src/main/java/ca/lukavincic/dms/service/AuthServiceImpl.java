@@ -2,6 +2,8 @@ package ca.lukavincic.dms.service;
 
 import ca.lukavincic.dms.dto.RegisterRequest;
 import ca.lukavincic.dms.dto.RegisterResponse;
+import ca.lukavincic.dms.dto.LoginRequest;
+import ca.lukavincic.dms.dto.LoginResponse;
 import ca.lukavincic.dms.model.AppUser;
 import ca.lukavincic.dms.model.Organization;
 import ca.lukavincic.dms.model.Role;
@@ -43,4 +45,24 @@ public class AuthServiceImpl implements AuthService {
 
         return new RegisterResponse(user.getId(), organization.getId(), user.getEmail(), user.getRole().name());
     }
+
+    @Override 
+    public LoginResponse login(LoginRequest request)
+    {
+        AppUser user = appUserRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash()))
+        {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return new LoginResponse(user.getId(), 
+                                user.getOrganization().getId(),
+                                user.getEmail(),
+                                user.getRole().name(),
+                                "Login Sucessful");
+
+    }
+
 }
