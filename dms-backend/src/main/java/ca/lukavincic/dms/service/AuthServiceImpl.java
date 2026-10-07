@@ -1,5 +1,6 @@
 package ca.lukavincic.dms.service;
 
+import ca.lukavincic.dms.service.JwtService;
 import ca.lukavincic.dms.dto.RegisterRequest;
 import ca.lukavincic.dms.dto.RegisterResponse;
 import ca.lukavincic.dms.dto.LoginRequest;
@@ -17,12 +18,14 @@ public class AuthServiceImpl implements AuthService {
     private final AppUserRepository appUserRepository;
     private final OrganizationRepository organizationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthServiceImpl(AppUserRepository appUserRepository, OrganizationRepository organizationRepository, PasswordEncoder passwordEncoder)
+    public AuthServiceImpl(AppUserRepository appUserRepository, OrganizationRepository organizationRepository, PasswordEncoder passwordEncoder, JwtService jwtService)
     {
         this.appUserRepository = appUserRepository;
         this.organizationRepository = organizationRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Override 
@@ -57,11 +60,15 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Invalid email or password");
         }
 
-        return new LoginResponse(user.getId(), 
-                                user.getOrganization().getId(),
-                                user.getEmail(),
-                                user.getRole().name(),
-                                "Login Sucessful");
+        String token = jwtService.generateToken(user);
+        return new LoginResponse(
+                token,        
+                user.getId(), 
+                user.getOrganization().getId(),
+                user.getEmail(),
+                user.getRole().name(),
+                "Login Sucessful"
+        );
 
     }
 

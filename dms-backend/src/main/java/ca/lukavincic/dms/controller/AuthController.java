@@ -8,6 +8,8 @@ import ca.lukavincic.dms.dto.LoginResponse;
 import ca.lukavincic.dms.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,4 +35,9 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<Map<String, String>> me(Authentication authentication) 
+    {
+        return ResponseEntity.ok(Map.of("email", authentication.getName()));
+    }
 }

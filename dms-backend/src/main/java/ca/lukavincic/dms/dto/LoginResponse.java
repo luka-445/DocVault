@@ -1,14 +1,16 @@
 package ca.lukavincic.dms.dto;
 
 public class LoginResponse {
-        private Long userId;
+    private String token;
+    private Long userId;
     private Long organizationId;
     private String email;
     private String role;
     private String message;
 
-    public LoginResponse(Long userId, Long organizationId, String email, String role, String message)
+    public LoginResponse(String token, Long userId, Long organizationId, String email, String role, String message)
     {
+        this.token = token;
         this.userId = userId;
         this.organizationId = organizationId;
         this.email = email;
@@ -16,6 +18,11 @@ public class LoginResponse {
         this.message = message;
     }
 
+    public String getToken()
+    {
+        return token;
+    }
+    
     public Long getUserId()
     {
         return userId;
