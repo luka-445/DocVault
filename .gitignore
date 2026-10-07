@@ -1,0 +1,29 @@
+# IDE 
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java / Maven
+target/
+*.class
+
+# Logs
+*.log 
+
+# Secrets
+.env
+*.env 
+application-local.properties
+
+#Local file Storage
+uploads/
+
+
+# React (eventually)
+node_modules/
+dist/
+build/
